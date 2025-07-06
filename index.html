@@ -7,24 +7,6 @@
     <meta name="theme-color" content="#F2F2F7" />
     <meta name="description" content="Create professional resumes with our iOS-inspired resume builder. Modern, clean, and easy to use." />
     <title>AI Resume Builder</title>
-    <!-- LinkedIn AutoFill Plugin -->
-    <script src="https://www.linkedin.com/autofill/js/autofill.js" type="text/javascript" async></script>
-    <script type="text/javascript">
-      // Global LinkedIn AutoFill callback functions
-      window.onLinkedInSuccess = function(profile) {
-        // Dispatch custom event with profile data
-        window.dispatchEvent(new CustomEvent('linkedinSuccess', { 
-          detail: profile 
-        }));
-      };
-      
-      window.onLinkedInError = function(error) {
-        console.error('LinkedIn AutoFill error:', error);
-        window.dispatchEvent(new CustomEvent('linkedinError', { 
-          detail: error 
-        }));
-      };
-    </script>
   </head>
   <body>
     <div id="root"></div>

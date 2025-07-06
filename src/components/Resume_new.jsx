@@ -29,9 +29,9 @@ const Resume = ({ data }) => {
     },
     modern: {
       name: 'Modern',
-      primaryColor: '#6d28d9',
-      secondaryColor: '#4c1d95',
-      accentColor: '#a78bfa'
+      primaryColor: '#7c3aed',
+      secondaryColor: '#5b21b6',
+      accentColor: '#8b5cf6'
     },
     executive: {
       name: 'Executive',
@@ -179,18 +179,14 @@ const Resume = ({ data }) => {
     }
     
     return education.map((edu, index) => (
-      <div key={index}>
-        <div className="flex justify-between items-start">
+      <div key={index} className="education-item">
+        <div className="item-header">
           <div>
-            <div className="font-semibold text-gray-800">{edu.degree}</div>
-            <div className="text-indigo-600 text-sm">{edu.institution}</div>
-            {edu.grade && <div className="text-xs text-gray-600 mt-1">Grade: <span className="font-medium">{edu.grade}</span></div>}
+            <div className="item-title">{edu.degree}</div>
+            <div className="item-subtitle">{edu.institution}</div>
+            {edu.grade && <div className="text-sm text-gray-600">Grade: {edu.grade}</div>}
           </div>
-          {edu.year && (
-            <div className="text-xs font-medium px-2 py-1 bg-indigo-50 text-indigo-700 rounded-md">
-              {edu.year}
-            </div>
-          )}
+          {edu.year && <div className="item-date">{edu.year}</div>}
         </div>
       </div>
     ));
@@ -221,20 +217,18 @@ const Resume = ({ data }) => {
     
     return experiences.map((exp, index) => (
       <div key={index} className="experience-item">
-        <div className="flex justify-between items-start mb-2">
+        <div className="item-header">
           <div>
-            <div className="font-semibold text-gray-800">{exp.role}</div>
-            <div className="text-indigo-600 text-sm font-medium">{exp.company}</div>
-            {exp.location && <div className="text-xs text-gray-500 mt-1">{exp.location}</div>}
+            <div className="item-title">{exp.role}</div>
+            <div className="item-subtitle">{exp.company}</div>
+            {exp.location && <div className="text-sm text-gray-600">{exp.location}</div>}
           </div>
-          {exp.duration && <div className="text-xs font-medium px-2 py-1 bg-indigo-50 text-indigo-700 rounded-md">{exp.duration}</div>}
+          {exp.duration && <div className="item-date">{exp.duration}</div>}
         </div>
         {exp.responsibilities.length > 0 && (
-          <div className="mt-2 space-y-1">
+          <div className="responsibilities">
             {exp.responsibilities.map((resp, respIndex) => (
-              <div key={respIndex} className="text-sm text-gray-700 pl-4 relative before:absolute before:w-1.5 before:h-1.5 before:bg-indigo-300 before:rounded-full before:left-0 before:top-1.5">
-                {resp}
-              </div>
+              <div key={respIndex} className="responsibility">{resp}</div>
             ))}
           </div>
         )}
@@ -257,32 +251,19 @@ const Resume = ({ data }) => {
     }
     
     return projects.map((project, index) => (
-      <div key={index}>
+      <div key={index} className="mb-3">
         <div className="flex justify-between items-start mb-1">
-          <div className="font-semibold text-gray-800">{project.name}</div>
+          <div className="item-title">{project.name}</div>
           {project.url && (
-            <a 
-              href={project.url} 
-              className="text-xs px-2 py-1 bg-indigo-100 text-indigo-600 rounded-md hover:bg-indigo-200 transition-colors font-medium"
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
+            <a href={project.url} className="text-sm" style={{ color: currentTemplateConfig.primaryColor }}>
               View Project
             </a>
           )}
         </div>
-        {project.description && (
-          <div className="text-sm text-gray-600 mb-2 leading-relaxed">
-            {project.description}
-          </div>
-        )}
+        {project.description && <div className="text-sm text-gray-600 mb-1">{project.description}</div>}
         {project.technologies && (
-          <div className="flex flex-wrap gap-1 mt-1">
-            {project.technologies.split(',').map((tech, techIndex) => (
-              <span key={techIndex} className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-md">
-                {tech.trim()}
-              </span>
-            ))}
+          <div className="text-sm" style={{ color: currentTemplateConfig.secondaryColor }}>
+            Technologies: {project.technologies}
           </div>
         )}
       </div>
@@ -295,14 +276,11 @@ const Resume = ({ data }) => {
     const skillsList = data.skills.split(',').map(skill => skill.trim()).filter(skill => skill);
     
     return (
-      <div className="flex flex-wrap gap-2">
+      <div className="skills-grid">
         {skillsList.map((skill, index) => (
-          <span 
-            key={index} 
-            className="px-3 py-1 bg-gradient-to-r from-indigo-100 to-violet-50 text-indigo-700 rounded-full text-xs font-medium"
-          >
+          <div key={index} className="skill-item">
             {skill}
-          </span>
+          </div>
         ))}
       </div>
     );
@@ -322,15 +300,11 @@ const Resume = ({ data }) => {
     }
     
     return certifications.map((cert, index) => (
-      <div key={index} className="group hover:bg-indigo-50 transition-colors rounded-md p-2 -mx-2">
-        <div className="font-medium text-sm text-gray-800">{cert.name}</div>
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+      <div key={index} className="mb-2">
+        <div className="item-title text-sm">{cert.name}</div>
+        <div className="flex justify-between text-sm text-gray-600">
           <span>{cert.issuer}</span>
-          {cert.year && (
-            <span className="px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded group-hover:bg-indigo-200 transition-colors">
-              {cert.year}
-            </span>
-          )}
+          {cert.year && <span>{cert.year}</span>}
         </div>
       </div>
     ));
@@ -349,11 +323,9 @@ const Resume = ({ data }) => {
     }
     
     return languages.map((lang, index) => (
-      <div key={index} className="flex justify-between items-center mb-2">
-        <span className="text-sm font-medium text-gray-700">{lang.language}</span>
-        <span className="text-xs px-2 py-1 bg-gradient-to-r from-indigo-50 to-violet-50 text-indigo-600 rounded-full">
-          {lang.proficiency}
-        </span>
+      <div key={index} className="flex justify-between text-sm mb-1">
+        <span>{lang.language}</span>
+        <span className="text-gray-600">{lang.proficiency}</span>
       </div>
     ));
   };
@@ -503,168 +475,81 @@ const Resume = ({ data }) => {
   );
 
   const ModernTemplate = () => (
-    <div className="bg-white shadow-lg overflow-hidden rounded-lg border border-gray-100">
-      {/* Header - Bold, modern header with gradient background */}
-      <div className="relative">
-        <div className="h-24 bg-gradient-to-r from-purple-600 via-violet-500 to-indigo-600"></div>
-        <div className="absolute -bottom-16 left-6 h-32 w-32 rounded-full border-4 border-white shadow-lg bg-white overflow-hidden flex items-center justify-center">
-          {data.photo_url ? (
-            <img src={data.photo_url} alt={data.full_name} className="h-full w-full object-cover" />
-          ) : (
-            <div className="h-full w-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white text-3xl font-bold">
-              {data.full_name ? data.full_name.charAt(0) : "R"}
+    <div className="bg-white shadow-lg">
+      <div className="grid grid-cols-1 lg:grid-cols-3">
+        {/* Sidebar */}
+        <div className="p-6 text-white" style={{ backgroundColor: currentTemplateConfig.primaryColor }}>
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold mb-2">{data.full_name}</h1>
+            <div className="space-y-2 text-sm opacity-90">
+              {renderContactInfo()}
+            </div>
+          </div>
+
+          {/* Skills */}
+          {data.skills && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Skills</h3>
+              <div className="space-y-1">
+                {data.skills.split(',').map((skill, index) => (
+                  <div key={index} className="text-sm bg-white bg-opacity-20 rounded px-2 py-1">
+                    {skill.trim()}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Certifications */}
+          {renderCertifications().length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Certifications</h3>
+              {renderCertifications()}
+            </div>
+          )}
+
+          {/* Languages */}
+          {renderLanguages().length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Languages</h3>
+              {renderLanguages()}
             </div>
           )}
         </div>
-        <div className="ml-44 p-6 pb-4">
-          <h1 className="text-3xl font-bold text-gray-800">{data.full_name}</h1>
-          <p className="text-lg text-indigo-600 font-medium">{data.title || "Professional"}</p>
-        </div>
-      </div>
 
-      <div className="pt-16 pb-8 px-6">
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left column - Personal details and skills */}
-          <div className="space-y-8">
-            {/* Contact Information with modern icons */}
-            <div className="bg-gray-50 rounded-xl p-5">
-              <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Contact Information</h3>
-              <div className="space-y-3">
-                {data.email && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaEnvelope className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">{data.email}</span>
-                  </div>
-                )}
-                {data.phone && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaPhone className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">{data.phone}</span>
-                  </div>
-                )}
-                {data.linkedin_url && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaLinkedin className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">LinkedIn Profile</span>
-                  </div>
-                )}
-                {data.portfolio_url && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaGlobe className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">Portfolio</span>
-                  </div>
-                )}
-                {data.location && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaMapMarkerAlt className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">{data.location}</span>
-                  </div>
-                )}
-              </div>
-            </div>
+        {/* Main Content */}
+        <div className="lg:col-span-2 p-6 space-y-6">
+          {/* Objective */}
+          {data.objective && (
+            <section>
+              <h2 className="section-title">About Me</h2>
+              <p className="text-gray-700 leading-relaxed">{data.objective}</p>
+            </section>
+          )}
 
-            {/* Skills - Modern pill style */}
-            {data.skills && (
-              <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Skills</h3>
-                <div className="flex flex-wrap gap-2">
-                  {data.skills.split(',').map((skill, index) => (
-                    <span 
-                      key={index} 
-                      className="px-3 py-1 bg-gradient-to-r from-indigo-100 to-violet-50 text-indigo-700 rounded-full text-xs font-medium"
-                    >
-                      {skill.trim()}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+          {/* Experience */}
+          {renderExperience().length > 0 && (
+            <section>
+              <h2 className="section-title">Experience</h2>
+              {renderExperience()}
+            </section>
+          )}
 
-            {/* Languages - Modern clean look */}
-            {renderLanguages().length > 0 && (
-              <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Languages</h3>
-                <div className="space-y-2">
-                  {renderLanguages()}
-                </div>
-              </div>
-            )}
+          {/* Education */}
+          {renderEducation().length > 0 && (
+            <section>
+              <h2 className="section-title">Education</h2>
+              {renderEducation()}
+            </section>
+          )}
 
-            {/* Certifications - Clean modern cards */}
-            {renderCertifications().length > 0 && (
-              <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Certifications</h3>
-                <div className="space-y-3">
-                  {renderCertifications()}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Experience, Education, etc. */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* About Me/Objective - Card with subtle gradient */}
-            {data.objective && (
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-5 border border-indigo-100">
-                <h3 className="text-sm uppercase tracking-wider text-indigo-600 font-semibold mb-3">About Me</h3>
-                <p className="text-gray-700 leading-relaxed">{data.objective}</p>
-              </div>
-            )}
-
-            {/* Experience - Modern timeline style */}
-            {renderExperience().length > 0 && (
-              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-6 border-b border-gray-200 pb-2">Professional Experience</h3>
-                <div className="space-y-6">
-                  {renderExperience().map((exp, index) => (
-                    <div key={index} className="relative pl-6 border-l-2 border-indigo-200 pb-6 last:pb-0">
-                      <div className="absolute -left-1.5 top-0 h-3 w-3 rounded-full bg-indigo-500"></div>
-                      {exp}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Education - Modern cards with subtle styling */}
-            {renderEducation().length > 0 && (
-              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-6 border-b border-gray-200 pb-2">Education</h3>
-                <div className="space-y-4">
-                  {renderEducation().map((edu, index) => (
-                    <div key={index} className="bg-gray-50 rounded-lg p-4 border-l-4 border-indigo-400">
-                      {edu}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Projects - Modern cards with hover effects */}
-            {renderProjects().length > 0 && (
-              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-6 border-b border-gray-200 pb-2">Projects</h3>
-                <div className="grid grid-cols-1 gap-4">
-                  {renderProjects().map((project, index) => (
-                    <div key={index} className="bg-gradient-to-r from-gray-50 to-white rounded-lg p-4 border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                      {project}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          {/* Projects */}
+          {renderProjects().length > 0 && (
+            <section>
+              <h2 className="section-title">Projects</h2>
+              {renderProjects()}
+            </section>
+          )}
         </div>
       </div>
     </div>

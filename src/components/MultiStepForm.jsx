@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PersonalInfoStep from './steps/PersonalInfoStep';
 import ObjectiveStep from './steps/ObjectiveStep';
@@ -8,7 +8,8 @@ import SkillsStep from './steps/SkillsStep';
 import ProjectsCertificationsStep from './steps/ProjectsCertificationsStep';
 import FinalDetailsStep from './steps/FinalDetailsStep';
 import Resume from './Resume';
-import { FaChevronLeft, FaChevronRight, FaEye, FaDownload, FaCheck } from 'react-icons/fa';
+import AIAssistantModal from './AIAssistantModal';
+import { FaChevronLeft, FaChevronRight, FaEye, FaDownload, FaCheck, FaRobot } from 'react-icons/fa';
 
 const steps = [
   { id: 'personal', title: 'Personal Info', emoji: '👤', description: 'Basic contact information' },
@@ -84,155 +85,12 @@ const MultiStepForm = ({ onBack }) => {
   const [viewMode, setViewMode] = useState('form'); // 'form', 'preview'
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [errors, setErrors] = useState({});
-  
-  // LinkedIn autofill handler
-  useEffect(() => {
-    const handleLinkedInAutofill = (event) => {
-      const linkedinData = event.detail;
-      console.log('LinkedIn data received:', linkedinData);
-      
-      // Map LinkedIn data to our form fields
-      const mappedData = mapLinkedInData(linkedinData);
-      
-      // Update form data with LinkedIn information
-      setFormData(prev => ({
-        ...prev,
-        ...mappedData
-      }));
-      
-      // Clear any existing errors
-      setErrors({});
-      
-      // Show success message
-      alert('LinkedIn profile imported successfully!');
-    };
-    
-    // Listen for LinkedIn autofill events
-    window.addEventListener('linkedinAutofill', handleLinkedInAutofill);
-    
-    // Cleanup
-    return () => {
-      window.removeEventListener('linkedinAutofill', handleLinkedInAutofill);
-    };
-  }, []);
-  
-  // Map LinkedIn data to our form structure
-  const mapLinkedInData = (data) => {
-    const mapped = {};
-    
-    // Personal Information
-    if (data.firstName && data.lastName) {
-      mapped.full_name = `${data.firstName} ${data.lastName}`;
-    }
-    if (data.emailAddress) {
-      mapped.email = data.emailAddress;
-    }
-    if (data.phoneNumbers && data.phoneNumbers.length > 0) {
-      mapped.phone = data.phoneNumbers[0].phoneNumber;
-    }
-    if (data.publicProfileUrl) {
-      mapped.linkedin_url = data.publicProfileUrl;
-    }
-    
-    // Summary/Objective
-    if (data.summary) {
-      mapped.objective = data.summary;
-    }
-    
-    // Education
-    if (data.educations && data.educations.length > 0) {
-      const edu1 = data.educations[0];
-      if (edu1.degree) mapped.degree_1 = edu1.degree;
-      if (edu1.schoolName) mapped.institution_1 = edu1.schoolName;
-      if (edu1.endDate && edu1.endDate.year) mapped.year_1 = edu1.endDate.year.toString();
-      
-      if (data.educations.length > 1) {
-        const edu2 = data.educations[1];
-        if (edu2.degree) mapped.degree_2 = edu2.degree;
-        if (edu2.schoolName) mapped.institution_2 = edu2.schoolName;
-        if (edu2.endDate && edu2.endDate.year) mapped.year_2 = edu2.endDate.year.toString();
-      }
-    }
-    
-    // Work Experience
-    if (data.positions && data.positions.length > 0) {
-      const pos1 = data.positions[0];
-      if (pos1.companyName) mapped.company_1 = pos1.companyName;
-      if (pos1.title) mapped.role_1 = pos1.title;
-      if (pos1.location && pos1.location.name) mapped.location_1 = pos1.location.name;
-      
-      // Format duration
-      if (pos1.startDate && pos1.endDate) {
-        const startYear = pos1.startDate.year;
-        const endYear = pos1.endDate.year || 'Present';
-        mapped.duration_1 = `${startYear} - ${endYear}`;
-      }
-      
-      // Add summary as responsibility
-      if (pos1.summary) {
-        mapped.responsibility_1_1 = pos1.summary;
-      }
-      
-      if (data.positions.length > 1) {
-        const pos2 = data.positions[1];
-        if (pos2.companyName) mapped.company_2 = pos2.companyName;
-        if (pos2.title) mapped.role_2 = pos2.title;
-        if (pos2.location && pos2.location.name) mapped.location_2 = pos2.location.name;
-        
-        if (pos2.startDate && pos2.endDate) {
-          const startYear = pos2.startDate.year;
-          const endYear = pos2.endDate.year || 'Present';
-          mapped.duration_2 = `${startYear} - ${endYear}`;
-        }
-        
-        if (pos2.summary) {
-          mapped.responsibility_2_1 = pos2.summary;
-        }
-      }
-    }
-    
-    // Skills
-    if (data.skills && data.skills.length > 0) {
-      const skillNames = data.skills.map(skill => skill.name || skill).join(', ');
-      mapped.skills = skillNames;
-    }
-    
-    // Languages
-    if (data.languages && data.languages.length > 0) {
-      if (data.languages[0]) mapped.language_1 = data.languages[0].name || data.languages[0];
-      if (data.languages[1]) mapped.language_2 = data.languages[1].name || data.languages[1];
-      if (data.languages[2]) mapped.language_3 = data.languages[2].name || data.languages[2];
-    }
-    
-    // Projects (from LinkedIn projects if available)
-    if (data.projects && data.projects.length > 0) {
-      const proj1 = data.projects[0];
-      if (proj1.name) mapped.project_1_name = proj1.name;
-      if (proj1.description) mapped.project_1_desc = proj1.description;
-      
-      if (data.projects.length > 1) {
-        const proj2 = data.projects[1];
-        if (proj2.name) mapped.project_2_name = proj2.name;
-        if (proj2.description) mapped.project_2_desc = proj2.description;
-      }
-    }
-    
-    // Certifications
-    if (data.certifications && data.certifications.length > 0) {
-      const cert1 = data.certifications[0];
-      if (cert1.name) mapped.certification_1 = cert1.name;
-      if (cert1.authority) mapped.issuer_1 = cert1.authority;
-      if (cert1.startDate && cert1.startDate.year) mapped.cert_year_1 = cert1.startDate.year.toString();
-      
-      if (data.certifications.length > 1) {
-        const cert2 = data.certifications[1];
-        if (cert2.name) mapped.certification_2 = cert2.name;
-        if (cert2.authority) mapped.issuer_2 = cert2.authority;
-        if (cert2.startDate && cert2.startDate.year) mapped.cert_year_2 = cert2.startDate.year.toString();
-      }
-    }
-    
-    return mapped;
+  const [aiAssistantOpen, setAiAssistantOpen] = useState(false);
+
+  // Handle AI suggestions generated from the assistant
+  const handleAISuggestions = (suggestions) => {
+    console.log('AI suggestions received:', suggestions);
+    // Suggestions are already displayed in the modal
   };
   
   // Define required fields for each step
@@ -620,6 +478,25 @@ const MultiStepForm = ({ onBack }) => {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Floating AI Assistant Button */}
+      <motion.button
+        onClick={() => setAiAssistantOpen(true)}
+        className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 flex items-center justify-center"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        title="AI Resume Assistant"
+      >
+        <FaRobot className="text-xl" />
+      </motion.button>
+
+      {/* AI Assistant Modal */}
+      <AIAssistantModal
+        isOpen={aiAssistantOpen}
+        onClose={() => setAiAssistantOpen(false)}
+        formData={formData}
+        onSuggestionsGenerated={handleAISuggestions}
+      />
     </div>
   );
 };

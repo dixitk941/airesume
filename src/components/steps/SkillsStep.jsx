@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaTimes, FaPlus, FaCode, FaUsers, FaLightbulb, FaBriefcase } from 'react-icons/fa';
+import { FaTimes, FaPlus, FaCode, FaUsers, FaLightbulb, FaBriefcase, FaRobot, FaSpinner, FaMagic } from 'react-icons/fa';
+import GeminiAIService from '../../services/GeminiAIService';
 
 const SkillsStep = ({ formData, handleChange, errors = {} }) => {
   const [focusedField, setFocusedField] = useState(null);
@@ -8,6 +9,8 @@ const SkillsStep = ({ formData, handleChange, errors = {} }) => {
   const [skillsList, setSkillsList] = useState(
     formData.skills ? formData.skills.split(',').map(skill => skill.trim()).filter(Boolean) : []
   );
+  const [isGeneratingSkills, setIsGeneratingSkills] = useState(false);
+  const [targetRole, setTargetRole] = useState('');
   
   const handleFocus = (fieldName) => {
     setFocusedField(fieldName);
@@ -54,6 +57,38 @@ const SkillsStep = ({ formData, handleChange, errors = {} }) => {
       }
     });
   };
+
+  const handleGenerateSkills = async () => {
+    if (!targetRole.trim()) {
+      alert('Please enter your target role first');
+      return;
+    }
+
+    setIsGeneratingSkills(true);
+    try {
+      const generatedSkills = await GeminiAIService.generateSkills(
+        targetRole,
+        formData.experience || '',
+        formData.education || ''
+      );
+
+      // Add new skills to existing ones (avoid duplicates)
+      const existingSkills = skillsList.map(s => s.toLowerCase());
+      const newSkills = generatedSkills.filter(skill => 
+        !existingSkills.includes(skill.toLowerCase())
+      );
+      
+      const updatedSkills = [...skillsList, ...newSkills];
+      setSkillsList(updatedSkills);
+      updateFormSkills(updatedSkills);
+
+    } catch (error) {
+      console.error('Failed to generate skills:', error);
+      alert('Failed to generate skills. Please try again or add them manually.');
+    } finally {
+      setIsGeneratingSkills(false);
+    }
+  };
   
   const skillCategories = [
     {
@@ -88,10 +123,58 @@ const SkillsStep = ({ formData, handleChange, errors = {} }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="text-[var(--color-text-secondary)] mb-8"
+        className="text-[var(--color-text-secondary)] mb-6"
       >
         List your skills relevant to the job you're applying for. Press Enter or comma after each skill.
       </motion.p>
+
+      {/* AI Skills Generator */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
+        className="mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl"
+      >
+        <h3 className="text-sm font-medium text-green-700 mb-3 flex items-center">
+          <FaRobot className="mr-2" />
+          AI Assistant - Generate Skills
+        </h3>
+        
+        <div className="flex flex-col sm:flex-row gap-3 mb-3">
+          <div className="flex-1">
+            <input
+              type="text"
+              value={targetRole}
+              onChange={(e) => setTargetRole(e.target.value)}
+              placeholder="Enter your target role (e.g., Frontend Developer)"
+              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+          
+          <button
+            type="button"
+            onClick={handleGenerateSkills}
+            disabled={isGeneratingSkills || !targetRole.trim()}
+            className="px-4 py-2 bg-gradient-to-r from-green-600 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          >
+            {isGeneratingSkills ? (
+              <>
+                <FaSpinner className="animate-spin mr-2" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <FaMagic className="mr-2" />
+                Generate Skills
+              </>
+            )}
+          </button>
+        </div>
+        
+        <p className="text-xs text-green-600">
+          AI will suggest relevant skills based on your target role
+        </p>
+      </motion.div>
       
       <motion.div
         initial={{ opacity: 0, y: 10 }}
