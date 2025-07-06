@@ -1,0 +1,57 @@
+/* Print styles for resume */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .resume-preview, .resume-preview * {
+    visibility: visible;
+  }
+  
+  .resume-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  button, .actions-container {
+    display: none !important;
+  }
+}
+
+/* Fix for container width */
+.container {
+  width: 100%;
+}
+
+/* Make sure form components appear nicely on all screens */
+@media screen and (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px; /* Prevents zoom on mobile */
+  }
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}

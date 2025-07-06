@@ -1,0 +1,806 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* iOS 17 Design Tokens - Updated for authentic iOS feel */
+:root {
+  /* Primary Colors */
+  --ios-blue: #007AFF;
+  --ios-green: #34C759;
+  --ios-indigo: #5856D6;
+  --ios-orange: #FF9500;
+  --ios-pink: #FF2D55;
+  --ios-purple: #AF52DE;
+  --ios-red: #FF3B30;
+  --ios-teal: #5AC8FA;
+  --ios-yellow: #FFCC00;
+  
+  /* Neutral Colors */
+  --ios-gray: #8E8E93;
+  --ios-gray-2: #AEAEB2;
+  --ios-gray-3: #C7C7CC;
+  --ios-gray-4: #D1D1D6;
+  --ios-gray-5: #E5E5EA;
+  --ios-gray-6: #F2F2F7;
+  
+  /* System Colors */
+  --color-primary: var(--ios-blue);
+  --color-primary-light: rgba(0, 122, 255, 0.8);
+  --color-primary-dark: #0062CC;
+  --color-secondary: var(--ios-purple);
+  --color-success: var(--ios-green);
+  --color-warning: var(--ios-orange);
+  --color-info: var(--ios-teal);
+  --color-danger: var(--ios-red);
+  
+  /* Background Colors */
+  --color-background: var(--ios-gray-6);
+  --color-card: #FFFFFF;
+  --color-grouped-background: var(--ios-gray-6);
+  --color-grouped-cell: #FFFFFF;
+  
+  /* Text Colors */
+  --color-text: #000000;
+  --color-text-secondary: var(--ios-gray);
+  --color-text-tertiary: var(--ios-gray-2);
+  --color-text-placeholder: var(--ios-gray-3);
+  
+  /* Border Colors */
+  --color-border: var(--ios-gray-5);
+  --color-separator: rgba(60, 60, 67, 0.1);
+  
+  /* System Effects */
+  --ios-blur-background: rgba(255, 255, 255, 0.72);
+  --ios-blur-tint: rgba(255, 255, 255, 0.3);
+  
+  /* System Radii */
+  --radius-small: 6px;
+  --radius-medium: 10px;
+  --radius-large: 14px;
+  --radius-xl: 20px;
+  --radius-button: 12px;
+  
+  /* Font Sizes - iOS System */
+  --font-caption2: 11px;
+  --font-caption1: 12px;
+  --font-footnote: 13px;
+  --font-subheadline: 15px;
+  --font-callout: 16px;
+  --font-body: 17px;
+  --font-headline: 17px;
+  --font-title3: 20px;
+  --font-title2: 22px;
+  --font-title1: 28px;
+  --font-largeTitle: 34px;
+  
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+/* Base Styles */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: var(--font-body);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Glass Morphism Effect - iOS 17 style */
+.glass {
+  background: var(--ios-blur-background);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* iOS 17 Button Styles */
+.btn-ios {
+  position: relative;
+  border-radius: var(--radius-button);
+  font-weight: var(--font-weight-medium);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-size: var(--font-subheadline);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.btn-ios:hover {
+  background-color: var(--color-primary-light);
+  transform: translateY(-1px);
+}
+
+.btn-ios:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+.btn-ios-secondary {
+  position: relative;
+  border-radius: var(--radius-button);
+  font-weight: var(--font-weight-medium);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: rgba(60, 60, 67, 0.1);
+  color: var(--color-text);
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-size: var(--font-subheadline);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.btn-ios-secondary:hover {
+  background-color: rgba(60, 60, 67, 0.18);
+}
+
+.btn-ios-secondary:active {
+  background-color: rgba(60, 60, 67, 0.25);
+}
+
+/* iOS 17 Card Styles */
+.card-ios {
+  border-radius: var(--radius-large);
+  overflow: hidden;
+  background-color: var(--color-card);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
+}
+
+/* iOS 17+ Neuromorphic Card Styles */
+.card-neuro {
+  border-radius: var(--radius-xl);
+  background: linear-gradient(145deg, #f6f6fb, #ffffff);
+  box-shadow: 
+    10px 10px 20px rgba(166, 180, 200, 0.1),
+    -10px -10px 20px rgba(255, 255, 255, 0.7),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.card-neuro:hover {
+  box-shadow: 
+    12px 12px 24px rgba(166, 180, 200, 0.15),
+    -12px -12px 24px rgba(255, 255, 255, 0.8),
+    inset 0 0 0 1px rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+}
+
+/* iOS 17+ Floating Card with Prismatic Effects */
+.card-float {
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 4px 24px -8px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.01);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-float::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.1) 70%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  animation: shine 6s infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  20% { transform: translateX(100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* iOS 17 List Card (Settings Style) */
+.list-card-ios {
+  border-radius: var(--radius-large);
+  overflow: hidden;
+  background-color: var(--color-card);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.list-card-ios .list-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-separator);
+}
+
+.list-card-ios .list-item:last-child {
+  border-bottom: none;
+}
+
+/* iOS 17 Input Styles */
+.input-ios {
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--color-border);
+  padding: 12px 16px;
+  width: 100%;
+  transition: all 0.2s ease;
+  background-color: rgba(142, 142, 147, 0.06);
+  font-size: var(--font-subheadline);
+  color: var(--color-text);
+}
+
+.input-ios:focus {
+  outline: none;
+  background-color: rgba(142, 142, 147, 0.02);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.25);
+}
+
+.input-ios::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+/* iOS 17+ Floating Labels */
+.input-float-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-float {
+  width: 100%;
+  padding: 16px 12px 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-card);
+  color: var(--color-text);
+  font-size: var(--font-subheadline);
+  transition: all 0.2s ease;
+}
+
+.input-float:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.25);
+}
+
+.input-float-label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+  font-size: var(--font-subheadline);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background-color: var(--color-card);
+  padding: 0 4px;
+}
+
+.input-float:focus + .input-float-label,
+.input-float:not(:placeholder-shown) + .input-float-label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: var(--font-footnote);
+  color: var(--color-primary);
+}
+
+.input-float-container.focus-highlight {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.1);
+}
+
+/* Error states for form inputs */
+.input-float.error {
+  border-color: var(--ios-red);
+  background-color: rgba(255, 59, 48, 0.05);
+}
+
+.input-float-container.error-highlight {
+  border-color: var(--ios-red);
+}
+
+.input-float-container.error-highlight .input-float-label {
+  color: var(--ios-red);
+}
+
+/* iOS 17 Progress Bar */
+.progress-ios {
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: rgba(120, 120, 128, 0.16);
+}
+
+.progress-ios div {
+  height: 100%;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--color-primary);
+}
+
+/* iOS 17 Section Titles */
+.section-title {
+  font-size: var(--font-title3);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 16px;
+  color: var(--color-text);
+}
+
+.section-subtitle {
+  font-size: var(--font-headline);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 12px;
+  color: var(--color-text);
+}
+
+/* iOS 17 Section Grouping (Settings style) */
+.section-group {
+  margin-bottom: 32px;
+}
+
+.section-header {
+  font-size: var(--font-subheadline);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding: 0 16px;
+}
+
+.section-footer {
+  font-size: var(--font-footnote);
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+  padding: 0 16px;
+}
+
+/* Resume Preview Styles */
+.resume-preview {
+  padding: 24px;
+  border-radius: var(--radius-large);
+  background-color: white;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* iOS 17 Back Indicator (Left Chevron) */
+.back-indicator {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primary);
+  font-size: var(--font-body);
+  font-weight: var(--font-weight-regular);
+}
+
+.back-indicator svg {
+  margin-right: 6px;
+}
+
+/* iOS 17 Tag/Pill Style */
+.tag-ios {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: var(--font-footnote);
+  font-weight: var(--font-weight-medium);
+  background-color: rgba(0, 122, 255, 0.1);
+  color: var(--color-primary);
+}
+
+/* iOS 17+ Tag Pill Styles */
+.tag-pill-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 40px;
+  align-items: flex-start;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background-color: rgba(0, 122, 255, 0.1);
+  color: var(--ios-blue);
+  border-radius: 16px;
+  font-size: var(--font-footnote);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.tag-pill:hover {
+  background-color: rgba(0, 122, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.tag-pill .close-icon {
+  margin-left: 6px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.tag-pill .close-icon:hover {
+  opacity: 1;
+}
+
+/* iOS 17+ Emoji Reaction Controls */
+.emoji-reaction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-right: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.emoji-reaction:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.emoji-reaction.selected {
+  background: var(--ios-gray-6);
+}
+
+/* iOS 17+ Progress Steps Indicator */
+.step-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.step-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 2px;
+  width: 100%;
+  background-color: var(--ios-gray-5);
+  z-index: 0;
+}
+
+.step-indicator-progress {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 2px;
+  background-color: var(--color-primary);
+  z-index: 1;
+  transition: width 0.3s ease;
+}
+
+.step-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid var(--ios-gray-4);
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.step-dot.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+}
+
+.step-dot.completed {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* iOS 17+ Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 32px;
+}
+
+.toggle-switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--ios-gray-4);
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 28px;
+  width: 28px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--color-primary);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* iOS 17+ Segmented Control */
+.segmented-control {
+  display: flex;
+  background-color: var(--ios-gray-6);
+  border-radius: var(--radius-button);
+  padding: 2px;
+  position: relative;
+  width: fit-content;
+}
+
+.segmented-control-option {
+  padding: 8px 16px;
+  font-size: var(--font-callout);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--color-text-secondary);
+  transition: color 0.3s ease;
+  border-radius: var(--radius-button);
+  white-space: nowrap;
+}
+
+.segmented-control-option.active {
+  color: var(--color-text);
+}
+
+.segmented-control-slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  bottom: 2px;
+  border-radius: var(--radius-button);
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+/* Custom animations - iOS style spring physics */
+@keyframes ios-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: ios-float 4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+
+/* Fix for container width */
+.container {
+  width: 100%;
+}
+
+/* Make sure form components appear nicely on all screens */
+@media screen and (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px; /* Prevents zoom on mobile */
+  }
+}
+
+/* iOS style bottom sheet action group */
+.action-sheet {
+  border-radius: var(--radius-large) var(--radius-large) 0 0;
+  background: var(--color-card);
+  padding: 16px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scroll styling - iOS style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Animations for page transitions - iOS style */
+@keyframes ios-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition {
+  animation: ios-fade-in 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Focus Ring - Accessibility */
+.focus-ring {
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.focus-ring:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.5);
+}
+
+/* Print styles for resume */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .resume-preview, .resume-preview * {
+    visibility: visible;
+  }
+  
+  .resume-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 2rem;
+    box-shadow: none;
+  }
+  
+  button, .actions-container {
+    display: none !important;
+  }
+}
+
+/* iOS 17+ Action Button */
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+}
+
+.action-button:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* iOS 17+ Focus/Selected State */
+.focus-highlight {
+  position: relative;
+}
+
+.focus-highlight::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: var(--radius-large);
+  border: 2px solid var(--color-primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.focus-highlight.selected::after {
+  opacity: 1;
+}
+
+/* LinkedIn AutoFill Button Styles */
+.linkedin-autofill-wrapper {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+/* LinkedIn AutoFill plugin button styling */
+#linkedin-autofill-container .IN-widget {
+  margin: 0 !important;
+}
+
+#linkedin-autofill-container .IN-widget .IN-right {
+  margin: 0 !important;
+}
+
+/* Style the actual LinkedIn button when it appears */
+#linkedin-autofill-container iframe {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* Ensure proper display of LinkedIn elements */
+#linkedin-autofill-container .IN-widget,
+#linkedin-autofill-container .IN-widget * {
+  box-sizing: border-box;
+}
+
+/* Hide fallback button by default */
+#linkedin-fallback-button.hidden {
+  display: none !important;
+}
+
+/* Ensure proper button sizing */
+#linkedin-fallback-button button {
+  min-height: 40px;
+}
