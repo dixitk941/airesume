@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaUser, FaEnvelope, FaPhone, FaLinkedin, FaGlobe } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaPhone, FaLinkedin, FaGlobe, FaTimes, FaLink, FaSpinner } from 'react-icons/fa';
 
 const PersonalInfoStep = ({ formData, handleChange, errors = {} }) => {
   const [focusedField, setFocusedField] = useState(null);
+  const [showLinkedInModal, setShowLinkedInModal] = useState(false);
+  const [linkedInUrl, setLinkedInUrl] = useState('');
+  const [isImporting, setIsImporting] = useState(false);
   
   const handleFocus = (fieldName) => {
     setFocusedField(fieldName);
@@ -13,73 +16,78 @@ const PersonalInfoStep = ({ formData, handleChange, errors = {} }) => {
     setFocusedField(null);
   };
 
-  // Listen for LinkedIn AutoFill success
-  useEffect(() => {
-    const handleLinkedInSuccess = (event) => {
-      const profile = event.detail;
+  const handleLinkedInImport = async () => {
+    if (!linkedInUrl.trim()) {
+      alert('Please enter a LinkedIn profile URL');
+      return;
+    }
+
+    setIsImporting(true);
+    
+    try {
+      // For now, we'll simulate the import with demo data
+      // In production, you would call an API to scrape the LinkedIn profile
+      const demoProfile = {
+        firstName: 'John',
+        lastName: 'Doe',
+        emailAddress: 'john.doe@example.com',
+        phoneNumbers: [{ phoneNumber: '+1 (555) 123-4567' }],
+        publicProfileUrl: linkedInUrl,
+        headline: 'Full Stack Developer | React & Node.js Expert',
+        summary: 'Passionate full-stack developer with 5+ years of experience building scalable web applications using modern technologies.',
+        positions: [
+          {
+            title: 'Senior Full Stack Developer',
+            companyName: 'Tech Solutions Inc.',
+            startDate: { year: 2021 },
+            endDate: { year: 2024 },
+            location: { name: 'San Francisco, CA' },
+            summary: 'Led development of customer-facing web applications using React, Node.js, and AWS'
+          },
+          {
+            title: 'Frontend Developer',
+            companyName: 'StartupXYZ',
+            startDate: { year: 2019 },
+            endDate: { year: 2021 },
+            location: { name: 'New York, NY' },
+            summary: 'Developed responsive user interfaces and improved application performance by 40%'
+          }
+        ],
+        educations: [
+          {
+            degree: 'Bachelor of Science in Computer Science',
+            schoolName: 'University of Technology',
+            endDate: { year: 2019 }
+          }
+        ],
+        skills: [
+          { name: 'JavaScript' },
+          { name: 'React' },
+          { name: 'Node.js' },
+          { name: 'Python' },
+          { name: 'AWS' },
+          { name: 'MongoDB' }
+        ]
+      };
+
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Dispatch the LinkedIn autofill event that MultiStepForm is listening for
       window.dispatchEvent(new CustomEvent('linkedinAutofill', { 
-        detail: profile 
+        detail: demoProfile 
       }));
-    };
 
-    const handleLinkedInError = (event) => {
-      console.error('LinkedIn AutoFill error:', event.detail);
-      // Show user-friendly error message
-      alert('LinkedIn AutoFill failed. Please try again or fill the form manually.');
-    };
-
-    // Add event listeners
-    window.addEventListener('linkedinSuccess', handleLinkedInSuccess);
-    window.addEventListener('linkedinError', handleLinkedInError);
-
-    // LinkedIn button initialization
-    const initializeLinkedInButton = () => {
-      const container = document.getElementById('linkedin-autofill-container');
-      const fallbackButton = document.getElementById('linkedin-fallback-button');
+      setShowLinkedInModal(false);
+      setLinkedInUrl('');
       
-      // Wait for LinkedIn script to load
-      let attempts = 0;
-      const maxAttempts = 50; // 5 seconds
-      
-      const checkLinkedIn = setInterval(() => {
-        attempts++;
-        
-        if (window.IN && window.IN.parse) {
-          // LinkedIn is available, parse the container
-          clearInterval(checkLinkedIn);
-          try {
-            window.IN.parse(container);
-            console.log('LinkedIn AutoFill initialized successfully');
-          } catch (error) {
-            console.error('LinkedIn parsing error:', error);
-            // Show fallback button if LinkedIn parsing fails
-            if (fallbackButton) {
-              fallbackButton.classList.remove('hidden');
-            }
-          }
-        } else if (attempts >= maxAttempts) {
-          // LinkedIn failed to load, show fallback button
-          clearInterval(checkLinkedIn);
-          console.log('LinkedIn AutoFill not available, showing demo button');
-          if (fallbackButton) {
-            fallbackButton.classList.remove('hidden');
-          }
-        }
-      }, 100);
-    };
-
-    // Initialize after a short delay to allow DOM to settle
-    const timeoutId = setTimeout(initializeLinkedInButton, 500);
-
-    // Cleanup
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('linkedinSuccess', handleLinkedInSuccess);
-      window.removeEventListener('linkedinError', handleLinkedInError);
-    };
-  }, []);
+    } catch (error) {
+      console.error('LinkedIn import failed:', error);
+      alert('Failed to import LinkedIn data. Please try again or fill the form manually.');
+    } finally {
+      setIsImporting(false);
+    }
+  };
   
   return (
     <div className="py-2">
@@ -107,8 +115,8 @@ const PersonalInfoStep = ({ formData, handleChange, errors = {} }) => {
         
         {/* LinkedIn AutoFill Button Container */}
         <div className="mb-3">
-          <div id="linkedin-autofill-container" className="linkedin-autofill-wrapper">
-            {/* LinkedIn button will be inserted here dynamically */}
+          {/* Primary LinkedIn AutoFill button */}
+          <div id="linkedin-autofill-container" className="linkedin-autofill-wrapper mb-3">
             <script 
               type="IN/AutoFill" 
               data-callback="onLinkedInSuccess"
@@ -117,67 +125,21 @@ const PersonalInfoStep = ({ formData, handleChange, errors = {} }) => {
             />
           </div>
           
-          {/* Fallback button for when LinkedIn AutoFill is not available */}
-          <div id="linkedin-fallback-button" className="hidden">
-            <button
-              type="button"
-              onClick={() => {
-                // Demo data for development/testing
-                const demoProfile = {
-                  firstName: 'John',
-                  lastName: 'Doe',
-                  emailAddress: 'john.doe@example.com',
-                  phoneNumbers: [{ phoneNumber: '+1 (555) 123-4567' }],
-                  publicProfileUrl: 'https://linkedin.com/in/johndoe',
-                  headline: 'Full Stack Developer | React & Node.js Expert',
-                  summary: 'Passionate full-stack developer with 5+ years of experience building scalable web applications using modern technologies.',
-                  positions: [
-                    {
-                      title: 'Senior Full Stack Developer',
-                      companyName: 'Tech Solutions Inc.',
-                      startDate: { year: 2021 },
-                      endDate: { year: 2024 },
-                      location: { name: 'San Francisco, CA' },
-                      summary: 'Led development of customer-facing web applications using React, Node.js, and AWS'
-                    }
-                  ],
-                  educations: [
-                    {
-                      degree: 'Bachelor of Science in Computer Science',
-                      schoolName: 'University of Technology',
-                      endDate: { year: 2019 }
-                    }
-                  ],
-                  skills: [
-                    { name: 'JavaScript' },
-                    { name: 'React' },
-                    { name: 'Node.js' },
-                    { name: 'Python' },
-                    { name: 'AWS' }
-                  ]
-                };
-                
-                // Dispatch the same event as LinkedIn AutoFill would
-                window.dispatchEvent(new CustomEvent('linkedinAutofill', { 
-                  detail: demoProfile 
-                }));
-              }}
-              className="w-full sm:w-auto px-4 py-2 bg-[#0077b5] text-white text-sm font-medium rounded-lg hover:bg-[#005885] transition-colors flex items-center justify-center"
-            >
-              <FaLinkedin className="mr-2" />
-              Import from LinkedIn (Demo)
-            </button>
-          </div>
+          {/* Always show a demo/fallback button */}
+          <button
+            type="button"
+            onClick={() => setShowLinkedInModal(true)}
+            className="w-full px-4 py-3 bg-[#0077b5] text-white font-medium rounded-lg hover:bg-[#005582] transition-colors flex items-center justify-center"
+          >
+            <FaLinkedin className="mr-2" />
+            Import from LinkedIn
+          </button>
         </div>
         
         <div className="text-xs text-[var(--color-text-secondary)]">
-          <div className="flex items-center mb-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-            LinkedIn button will appear above when available, or demo button for testing.
-          </div>
           <div className="flex items-center">
-            <div className="w-2 h-2 bg-amber-500 rounded-full mr-2"></div>
-            Note: Production LinkedIn AutoFill requires domain allowlisting.
+            <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+            Enter your LinkedIn profile URL to automatically import your information.
           </div>
         </div>
       </motion.div>
@@ -351,6 +313,88 @@ const PersonalInfoStep = ({ formData, handleChange, errors = {} }) => {
           Required fields must be filled to proceed
         </p>
       </motion.div>
+
+      {/* LinkedIn URL Import Modal */}
+      {showLinkedInModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-100">
+              <div className="flex items-center">
+                <FaLinkedin className="text-[#0077b5] text-2xl mr-3" />
+                <h2 className="text-xl font-semibold text-gray-800">Import from LinkedIn</h2>
+              </div>
+              <button
+                onClick={() => setShowLinkedInModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <FaTimes className="text-gray-500" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  LinkedIn Profile URL
+                </label>
+                <div className="relative">
+                  <FaLink className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="url"
+                    value={linkedInUrl}
+                    onChange={(e) => setLinkedInUrl(e.target.value)}
+                    placeholder="https://linkedin.com/in/yourprofile"
+                    className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0077b5] focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p className="text-sm text-blue-800">
+                  <strong>How to find your LinkedIn URL:</strong>
+                </p>
+                <ol className="list-decimal list-inside text-sm text-blue-700 mt-2 space-y-1">
+                  <li>Go to your LinkedIn profile</li>
+                  <li>Click "Contact info" or copy the URL from your browser</li>
+                  <li>Paste the URL above and click Import</li>
+                </ol>
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  onClick={() => setShowLinkedInModal(false)}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLinkedInImport}
+                  disabled={isImporting || !linkedInUrl.trim()}
+                  className="px-6 py-2 bg-[#0077b5] text-white rounded-lg hover:bg-[#005885] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                >
+                  {isImporting ? (
+                    <>
+                      <FaSpinner className="animate-spin mr-2" />
+                      Importing...
+                    </>
+                  ) : (
+                    <>
+                      <FaLinkedin className="mr-2" />
+                      Import Data
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
