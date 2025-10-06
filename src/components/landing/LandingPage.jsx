@@ -1,15 +1,21 @@
+import { useNavigate } from 'react-router-dom';
 import Hero from './Hero';
 import Features from './Features';
 import Testimonials from './Testimonials';
 import CTA from './CTA';
 
-const LandingPage = ({ onGetStarted }) => {
+const LandingPage = () => {
+  const navigate = useNavigate();
+  const handleGetStarted = () => {
+    navigate('/builder');
+  };
+
   return (
     <div className="landing-page">
-      <Hero onGetStarted={onGetStarted} />
+      <Hero onGetStarted={handleGetStarted} />
       <Features />
       <Testimonials />
-      <CTA onGetStarted={onGetStarted} />
+      <CTA onGetStarted={handleGetStarted} />
     </div>
   );
 };

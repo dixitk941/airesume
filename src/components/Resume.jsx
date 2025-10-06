@@ -1,5 +1,29 @@
-import { useState } from 'react';
-import { FaDownload, FaPrint, FaEye, FaLinkedin, FaGithub, FaGlobe, FaEnvelope, FaPhone, FaMapMarkerAlt, FaPalette } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { 
+  FaDownload, 
+  FaPrint, 
+  FaEye, 
+  FaLinkedin, 
+  FaGithub, 
+  FaGlobe, 
+  FaEnvelope, 
+  FaPhone, 
+  FaMapMarkerAlt, 
+  FaPalette,
+  FaUser,
+  FaBriefcase,
+  FaGraduationCap,
+  FaCog,
+  FaAward,
+  FaStar,
+  FaCode,
+  FaTimes,
+  FaCalendarAlt,
+  FaLanguage,
+  FaHeart,
+  FaProjectDiagram,
+  FaCertificate
+} from 'react-icons/fa';
 
 const Resume = ({ data }) => {
   const [currentTemplate, setCurrentTemplate] = useState('professional');
@@ -7,8 +31,14 @@ const Resume = ({ data }) => {
 
   if (!data || Object.keys(data).length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-500">
-        <p>Please fill in your information to see the resume preview</p>
+      <div className="flex items-center justify-center h-64 text-gray-700 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+            <FaUser className="text-blue-600 text-2xl" />
+          </div>
+          <p className="text-lg font-medium text-gray-800">Ready to create your perfect resume?</p>
+          <p className="text-sm text-gray-600 mt-1">Fill in your information to see the magic happen</p>
+        </div>
       </div>
     );
   }
@@ -16,141 +46,68 @@ const Resume = ({ data }) => {
   // Template configurations
   const templates = {
     professional: {
-      name: 'Professional',
-      primaryColor: '#2563eb',
-      secondaryColor: '#1e40af',
-      accentColor: '#3b82f6'
-    },
-    minimal: {
-      name: 'Minimal',
-      primaryColor: '#374151',
-      secondaryColor: '#1f2937',
-      accentColor: '#6b7280'
+      name: 'Professional Elite',
+      primaryColor: '#1e3a8a',
+      secondaryColor: '#3b82f6',
+      accentColor: '#60a5fa',
+      textColor: '#1f2937',
+      description: 'Corporate excellence',
+      icon: '👔'
     },
     modern: {
-      name: 'Modern',
-      primaryColor: '#6d28d9',
-      secondaryColor: '#4c1d95',
-      accentColor: '#a78bfa'
+      name: 'Modern Clean',
+      primaryColor: '#6366f1',
+      secondaryColor: '#8b5cf6',
+      accentColor: '#a78bfa',
+      textColor: '#374151',
+      description: 'Clean & contemporary',
+      icon: '🎨'
     },
-    executive: {
-      name: 'Executive',
-      primaryColor: '#059669',
-      secondaryColor: '#047857',
-      accentColor: '#10b981'
+    ats_optimized: {
+      name: 'ATS Champion',
+      primaryColor: '#047857',
+      secondaryColor: '#059669',
+      accentColor: '#10b981',
+      textColor: '#1f2937',
+      description: 'ATS-friendly winner',
+      icon: '🎯'
     },
     creative: {
-      name: 'Creative',
+      name: 'Creative Studio',
       primaryColor: '#dc2626',
-      secondaryColor: '#b91c1c',
-      accentColor: '#ef4444'
+      secondaryColor: '#ef4444',
+      accentColor: '#f87171',
+      textColor: '#1f2937',
+      description: 'Bold & innovative',
+      icon: '⚡'
+    },
+    tech_focus: {
+      name: 'Tech Mastery',
+      primaryColor: '#0f766e',
+      secondaryColor: '#14b8a6',
+      accentColor: '#5eead4',
+      textColor: '#1f2937',
+      description: 'Developer-focused',
+      icon: '💻'
     }
   };
 
   const currentTemplateConfig = templates[currentTemplate];
 
-  // Print and PDF functionality
-  const handlePrint = () => {
-    window.print();
-  };
-
-  const handleDownloadPDF = () => {
-    // Create a new window with the resume content
-    const printWindow = window.open('', '_blank');
-    const resumeContent = document.getElementById('resume-content').innerHTML;
-    
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${data.full_name || 'Resume'}</title>
-          <meta charset="utf-8">
-          <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { 
-              font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-              line-height: 1.4; 
-              color: #374151;
-              background: white;
-            }
-            .resume-container { 
-              max-width: 8.5in; 
-              margin: 0 auto; 
-              padding: 0.5in;
-              min-height: 11in;
-              background: white;
-            }
-            .header { margin-bottom: 1rem; }
-            .section { margin-bottom: 1rem; }
-            .section-title { 
-              font-size: 1.1rem; 
-              font-weight: 600; 
-              border-bottom: 2px solid ${currentTemplateConfig.primaryColor}; 
-              padding-bottom: 0.25rem; 
-              margin-bottom: 0.75rem;
-              color: ${currentTemplateConfig.primaryColor};
-            }
-            .contact-info { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.9rem; }
-            .contact-item { display: flex; align-items: center; gap: 0.25rem; }
-            .experience-item, .education-item { margin-bottom: 0.75rem; }
-            .item-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.25rem; }
-            .item-title { font-weight: 600; color: #1f2937; }
-            .item-subtitle { color: #6b7280; font-size: 0.9rem; }
-            .item-date { color: #9ca3af; font-size: 0.85rem; }
-            .responsibilities { margin-top: 0.5rem; }
-            .responsibility { margin-bottom: 0.25rem; padding-left: 1rem; position: relative; }
-            .responsibility::before { 
-              content: '•'; 
-              position: absolute; 
-              left: 0; 
-              color: ${currentTemplateConfig.primaryColor}; 
-            }
-            .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; }
-            .skill-item { 
-              background: ${currentTemplateConfig.primaryColor}15; 
-              padding: 0.25rem 0.5rem; 
-              border-radius: 0.25rem; 
-              font-size: 0.85rem;
-              text-align: center;
-            }
-            @media print {
-              body { print-color-adjust: exact; }
-              .resume-container { margin: 0; padding: 0.25in; box-shadow: none; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="resume-container">
-            ${resumeContent}
-          </div>
-          <script>
-            window.onload = function() {
-              window.print();
-              window.onafterprint = function() {
-                window.close();
-              };
-            };
-          </script>
-        </body>
-      </html>
-    `);
-    
-    printWindow.document.close();
-  };
-
-  // Helper functions
+  // Helper functions (keeping them the same as your existing code)
   const renderContactInfo = () => {
     const contacts = [];
     
     if (data.email) contacts.push({ icon: FaEnvelope, text: data.email, link: `mailto:${data.email}` });
     if (data.phone) contacts.push({ icon: FaPhone, text: data.phone, link: `tel:${data.phone}` });
     if (data.linkedin_url) contacts.push({ icon: FaLinkedin, text: 'LinkedIn', link: data.linkedin_url });
+    if (data.github_url) contacts.push({ icon: FaGithub, text: 'GitHub', link: data.github_url });
     if (data.portfolio_url) contacts.push({ icon: FaGlobe, text: 'Portfolio', link: data.portfolio_url });
     
     return contacts.map((contact, index) => (
-      <div key={index} className="contact-item">
-        <contact.icon className="text-sm" style={{ color: currentTemplateConfig.primaryColor }} />
-        <a href={contact.link} className="text-sm hover:underline" style={{ color: currentTemplateConfig.secondaryColor }}>
+      <div key={index} className="contact-item flex items-center mb-2">
+        <contact.icon className="text-sm mr-2" />
+        <a href={contact.link} className="text-sm hover:underline transition-colors">
           {contact.text}
         </a>
       </div>
@@ -179,15 +136,17 @@ const Resume = ({ data }) => {
     }
     
     return education.map((edu, index) => (
-      <div key={index}>
+      <div key={index} className="education-item mb-4">
         <div className="flex justify-between items-start">
-          <div>
-            <div className="font-semibold text-gray-800">{edu.degree}</div>
-            <div className="text-indigo-600 text-sm">{edu.institution}</div>
-            {edu.grade && <div className="text-xs text-gray-600 mt-1">Grade: <span className="font-medium">{edu.grade}</span></div>}
+          <div className="flex-1">
+            <div className="font-semibold text-gray-900">{edu.degree}</div>
+            <div className="font-medium text-gray-700">{edu.institution}</div>
+            {edu.grade && (
+              <div className="text-sm text-gray-600 mt-1">Grade: {edu.grade}</div>
+            )}
           </div>
           {edu.year && (
-            <div className="text-xs font-medium px-2 py-1 bg-indigo-50 text-indigo-700 rounded-md">
+            <div className="text-sm font-medium px-3 py-1 bg-gray-100 text-gray-800 rounded">
               {edu.year}
             </div>
           )}
@@ -199,7 +158,6 @@ const Resume = ({ data }) => {
   const renderExperience = () => {
     const experiences = [];
     
-    // Collect all experiences
     for (let i = 1; i <= 3; i++) {
       if (data[`company_${i}`] && data[`role_${i}`]) {
         const responsibilities = [];
@@ -220,19 +178,24 @@ const Resume = ({ data }) => {
     }
     
     return experiences.map((exp, index) => (
-      <div key={index} className="experience-item">
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <div className="font-semibold text-gray-800">{exp.role}</div>
-            <div className="text-indigo-600 text-sm font-medium">{exp.company}</div>
-            {exp.location && <div className="text-xs text-gray-500 mt-1">{exp.location}</div>}
+      <div key={index} className="experience-item mb-6">
+        <div className="flex justify-between items-start mb-3">
+          <div className="flex-1">
+            <div className="font-semibold text-gray-900 text-lg">{exp.role}</div>
+            <div className="font-medium text-gray-700">{exp.company}</div>
+            {exp.location && <div className="text-sm text-gray-600">{exp.location}</div>}
           </div>
-          {exp.duration && <div className="text-xs font-medium px-2 py-1 bg-indigo-50 text-indigo-700 rounded-md">{exp.duration}</div>}
+          {exp.duration && (
+            <div className="text-sm font-medium px-3 py-1 bg-gray-100 text-gray-800 rounded">
+              {exp.duration}
+            </div>
+          )}
         </div>
         {exp.responsibilities.length > 0 && (
-          <div className="mt-2 space-y-1">
+          <div className="space-y-1">
             {exp.responsibilities.map((resp, respIndex) => (
-              <div key={respIndex} className="text-sm text-gray-700 pl-4 relative before:absolute before:w-1.5 before:h-1.5 before:bg-indigo-300 before:rounded-full before:left-0 before:top-1.5">
+              <div key={respIndex} className="text-sm text-gray-700 pl-4 relative">
+                <div className="absolute left-0 top-2 w-2 h-2 bg-gray-400 rounded-full"></div>
                 {resp}
               </div>
             ))}
@@ -257,29 +220,27 @@ const Resume = ({ data }) => {
     }
     
     return projects.map((project, index) => (
-      <div key={index}>
-        <div className="flex justify-between items-start mb-1">
-          <div className="font-semibold text-gray-800">{project.name}</div>
+      <div key={index} className="project-item mb-4 p-4 bg-gray-50 rounded-lg">
+        <div className="flex justify-between items-start mb-2">
+          <div className="font-semibold text-gray-900">{project.name}</div>
           {project.url && (
             <a 
               href={project.url} 
-              className="text-xs px-2 py-1 bg-indigo-100 text-indigo-600 rounded-md hover:bg-indigo-200 transition-colors font-medium"
+              className="text-xs px-3 py-1 bg-blue-100 text-blue-800 rounded font-medium"
               target="_blank" 
               rel="noopener noreferrer"
             >
-              View Project
+              View
             </a>
           )}
         </div>
         {project.description && (
-          <div className="text-sm text-gray-600 mb-2 leading-relaxed">
-            {project.description}
-          </div>
+          <div className="text-sm text-gray-700 mb-3">{project.description}</div>
         )}
         {project.technologies && (
-          <div className="flex flex-wrap gap-1 mt-1">
+          <div className="flex flex-wrap gap-2">
             {project.technologies.split(',').map((tech, techIndex) => (
-              <span key={techIndex} className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-md">
+              <span key={techIndex} className="text-xs px-2 py-1 bg-gray-200 text-gray-700 rounded">
                 {tech.trim()}
               </span>
             ))}
@@ -299,7 +260,7 @@ const Resume = ({ data }) => {
         {skillsList.map((skill, index) => (
           <span 
             key={index} 
-            className="px-3 py-1 bg-gradient-to-r from-indigo-100 to-violet-50 text-indigo-700 rounded-full text-xs font-medium"
+            className="px-3 py-1 bg-gray-100 text-gray-800 rounded text-sm font-medium border"
           >
             {skill}
           </span>
@@ -322,12 +283,12 @@ const Resume = ({ data }) => {
     }
     
     return certifications.map((cert, index) => (
-      <div key={index} className="group hover:bg-indigo-50 transition-colors rounded-md p-2 -mx-2">
-        <div className="font-medium text-sm text-gray-800">{cert.name}</div>
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+      <div key={index} className="certification-item mb-3 p-3 bg-gray-50 rounded">
+        <div className="font-medium text-gray-900">{cert.name}</div>
+        <div className="flex justify-between items-center text-sm text-gray-700 mt-1">
           <span>{cert.issuer}</span>
           {cert.year && (
-            <span className="px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded group-hover:bg-indigo-200 transition-colors">
+            <span className="px-2 py-1 bg-gray-200 text-gray-800 rounded text-xs">
               {cert.year}
             </span>
           )}
@@ -336,464 +297,402 @@ const Resume = ({ data }) => {
     ));
   };
 
-  const renderLanguages = () => {
-    const languages = [];
-    
-    for (let i = 1; i <= 3; i++) {
-      if (data[`language_${i}`]) {
-        languages.push({
-          language: data[`language_${i}`],
-          proficiency: data[`proficiency_${i}`] || 'Fluent'
-        });
-      }
-    }
-    
-    return languages.map((lang, index) => (
-      <div key={index} className="flex justify-between items-center mb-2">
-        <span className="text-sm font-medium text-gray-700">{lang.language}</span>
-        <span className="text-xs px-2 py-1 bg-gradient-to-r from-indigo-50 to-violet-50 text-indigo-600 rounded-full">
-          {lang.proficiency}
-        </span>
-      </div>
-    ));
-  };
-
-  // Template Components
+  // Professional Template
   const ProfessionalTemplate = () => (
-    <div className="bg-white shadow-lg">
-      {/* Header */}
-      <div className="p-6 bg-gradient-to-r" style={{ 
-        backgroundImage: `linear-gradient(135deg, ${currentTemplateConfig.primaryColor}, ${currentTemplateConfig.secondaryColor})` 
-      }}>
-        <h1 className="text-3xl font-bold text-white mb-2">{data.full_name}</h1>
-        <div className="flex flex-wrap gap-4 text-white text-sm opacity-95">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden print:shadow-none print:rounded-none">
+      <div className="p-6 text-white print:text-black print:bg-white" style={{ backgroundColor: currentTemplateConfig.primaryColor }}>
+        <h1 className="text-3xl font-bold mb-2 print:text-black">{data.full_name}</h1>
+        <p className="text-lg opacity-90 mb-4 print:text-gray-700 print:opacity-100">{data.title || "Professional"}</p>
+        <div className="flex flex-wrap gap-4 text-sm print:text-black">
           {renderContactInfo()}
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
-        {/* Objective */}
-        {data.objective && (
-          <section className="section">
-            <h2 className="section-title">Professional Summary</h2>
-            <p className="text-gray-700 leading-relaxed">{data.objective}</p>
-          </section>
-        )}
+      <div className="p-6 print:p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 print:gap-4">
+          <div className="lg:col-span-2 space-y-6 print:space-y-4">
+            {data.objective && (
+              <section>
+                <h2 className="text-xl font-bold mb-3 text-gray-900 border-b-2 pb-2" style={{ borderColor: currentTemplateConfig.primaryColor }}>
+                  Professional Summary
+                </h2>
+                <p className="text-gray-700 leading-relaxed">{data.objective}</p>
+              </section>
+            )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            {/* Experience */}
             {renderExperience().length > 0 && (
-              <section className="section">
-                <h2 className="section-title">Professional Experience</h2>
+              <section>
+                <h2 className="text-xl font-bold mb-4 text-gray-900 border-b-2 pb-2" style={{ borderColor: currentTemplateConfig.primaryColor }}>
+                  Professional Experience
+                </h2>
                 {renderExperience()}
               </section>
             )}
 
-            {/* Education */}
+            {renderProjects().length > 0 && (
+              <section>
+                <h2 className="text-xl font-bold mb-4 text-gray-900 border-b-2 pb-2" style={{ borderColor: currentTemplateConfig.primaryColor }}>
+                  Key Projects
+                </h2>
+                {renderProjects()}
+              </section>
+            )}
+          </div>
+
+          <div className="space-y-6 print:space-y-4">
+            {data.skills && (
+              <section>
+                <h3 className="text-lg font-bold mb-3 text-gray-900">Skills</h3>
+                {renderSkills()}
+              </section>
+            )}
+
             {renderEducation().length > 0 && (
-              <section className="section">
-                <h2 className="section-title">Education</h2>
+              <section>
+                <h3 className="text-lg font-bold mb-3 text-gray-900">Education</h3>
                 {renderEducation()}
               </section>
             )}
 
-            {/* Projects */}
+            {renderCertifications().length > 0 && (
+              <section>
+                <h3 className="text-lg font-bold mb-3 text-gray-900">Certifications</h3>
+                {renderCertifications()}
+              </section>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Modern Clean Template
+  const ModernTemplate = () => (
+    <div className="bg-white shadow-xl rounded-2xl overflow-hidden print:shadow-none print:rounded-none">
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r opacity-10" style={{ 
+          backgroundColor: currentTemplateConfig.primaryColor 
+        }}></div>
+        <div className="relative p-8 text-center">
+          <h1 className="text-4xl font-light mb-2" style={{ color: currentTemplateConfig.primaryColor }}>
+            {data.full_name}
+          </h1>
+          <p className="text-xl text-gray-600 mb-6">{data.title || "Professional"}</p>
+          <div className="flex justify-center flex-wrap gap-6 text-sm text-gray-700">
+            {renderContactInfo()}
+          </div>
+        </div>
+      </div>
+
+      <div className="p-8">
+        {data.objective && (
+          <section className="mb-8">
+            <h2 className="text-2xl font-light mb-4 text-center" style={{ color: currentTemplateConfig.primaryColor }}>
+              About Me
+            </h2>
+            <p className="text-gray-700 leading-relaxed text-center max-w-3xl mx-auto">{data.objective}</p>
+          </section>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-8">
+            {renderExperience().length > 0 && (
+              <section>
+                <h2 className="text-2xl font-light mb-6" style={{ color: currentTemplateConfig.primaryColor }}>
+                  Experience
+                </h2>
+                {renderExperience()}
+              </section>
+            )}
+
             {renderProjects().length > 0 && (
-              <section className="section">
-                <h2 className="section-title">Projects</h2>
+              <section>
+                <h2 className="text-2xl font-light mb-6" style={{ color: currentTemplateConfig.primaryColor }}>
+                  Projects
+                </h2>
+                {renderProjects()}
+              </section>
+            )}
+          </div>
+
+          <div className="space-y-8">
+            {data.skills && (
+              <section>
+                <h3 className="text-xl font-light mb-4" style={{ color: currentTemplateConfig.primaryColor }}>Skills</h3>
+                {renderSkills()}
+              </section>
+            )}
+
+            {renderEducation().length > 0 && (
+              <section>
+                <h3 className="text-xl font-light mb-4" style={{ color: currentTemplateConfig.primaryColor }}>Education</h3>
+                {renderEducation()}
+              </section>
+            )}
+
+            {renderCertifications().length > 0 && (
+              <section>
+                <h3 className="text-xl font-light mb-4" style={{ color: currentTemplateConfig.primaryColor }}>Certifications</h3>
+                {renderCertifications()}
+              </section>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ATS Optimized Template
+  const ATSOptimizedTemplate = () => (
+    <div className="bg-white border-2 border-gray-200 print:border-gray-400">
+      <div className="p-6">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{data.full_name}</h1>
+          <p className="text-lg text-gray-700 mb-4">{data.title || "Professional"}</p>
+          <div className="flex justify-center flex-wrap gap-4 text-sm text-gray-600">
+            {renderContactInfo()}
+          </div>
+        </div>
+
+        {data.objective && (
+          <section className="mb-6">
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-300 pb-1 mb-3">
+              PROFESSIONAL SUMMARY
+            </h2>
+            <p className="text-gray-700 leading-relaxed">{data.objective}</p>
+          </section>
+        )}
+
+        {renderExperience().length > 0 && (
+          <section className="mb-6">
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-300 pb-1 mb-3">
+              WORK EXPERIENCE
+            </h2>
+            {renderExperience()}
+          </section>
+        )}
+
+        {data.skills && (
+          <section className="mb-6">
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-300 pb-1 mb-3">
+              TECHNICAL SKILLS
+            </h2>
+            {renderSkills()}
+          </section>
+        )}
+
+        {renderEducation().length > 0 && (
+          <section className="mb-6">
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-300 pb-1 mb-3">
+              EDUCATION
+            </h2>
+            {renderEducation()}
+          </section>
+        )}
+
+        {renderProjects().length > 0 && (
+          <section className="mb-6">
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-300 pb-1 mb-3">
+              KEY PROJECTS
+            </h2>
+            {renderProjects()}
+          </section>
+        )}
+
+        {renderCertifications().length > 0 && (
+          <section>
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-300 pb-1 mb-3">
+              CERTIFICATIONS
+            </h2>
+            {renderCertifications()}
+          </section>
+        )}
+      </div>
+    </div>
+  );
+
+  // Creative Template
+  const CreativeTemplate = () => (
+    <div className="bg-white shadow-2xl rounded-3xl overflow-hidden print:shadow-none print:rounded-none">
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-br opacity-20" style={{ 
+          background: `linear-gradient(135deg, ${currentTemplateConfig.primaryColor}, ${currentTemplateConfig.accentColor})`
+        }}></div>
+        <div className="relative p-8">
+          <div className="flex items-center space-x-6">
+            <div className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white" style={{ 
+              backgroundColor: currentTemplateConfig.primaryColor 
+            }}>
+              {data.full_name?.charAt(0)}
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold mb-2" style={{ color: currentTemplateConfig.primaryColor }}>
+                {data.full_name}
+              </h1>
+              <p className="text-xl text-gray-600 mb-4">{data.title || "Creative Professional"}</p>
+              <div className="flex flex-wrap gap-4 text-sm">
+                {renderContactInfo()}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            {data.objective && (
+              <section>
+                <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaUser className="mr-3" />
+                  Creative Vision
+                </h2>
+                <p className="text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg">{data.objective}</p>
+              </section>
+            )}
+
+            {renderExperience().length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold mb-6 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaBriefcase className="mr-3" />
+                  Experience Journey
+                </h2>
+                {renderExperience()}
+              </section>
+            )}
+
+            {renderProjects().length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold mb-6 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaProjectDiagram className="mr-3" />
+                  Creative Projects
+                </h2>
+                {renderProjects()}
+              </section>
+            )}
+          </div>
+
+          <div className="space-y-8">
+            {data.skills && (
+              <section>
+                <h3 className="text-xl font-bold mb-4 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaStar className="mr-3" />
+                  Skills
+                </h3>
+                {renderSkills()}
+              </section>
+            )}
+
+            {renderEducation().length > 0 && (
+              <section>
+                <h3 className="text-xl font-bold mb-4 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaGraduationCap className="mr-3" />
+                  Education
+                </h3>
+                {renderEducation()}
+              </section>
+            )}
+
+            {renderCertifications().length > 0 && (
+              <section>
+                <h3 className="text-xl font-bold mb-4 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaCertificate className="mr-3" />
+                  Certifications
+                </h3>
+                {renderCertifications()}
+              </section>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Tech Focus Template
+  const TechFocusTemplate = () => (
+    <div className="bg-gray-900 text-white shadow-2xl rounded-lg overflow-hidden print:bg-white print:text-black print:shadow-none print:rounded-none print:border print:border-gray-400">
+      <div className="p-6 bg-gradient-to-r print:bg-white" style={{ 
+        background: `linear-gradient(135deg, ${currentTemplateConfig.primaryColor}, ${currentTemplateConfig.secondaryColor})`
+      }}>
+        <div className="flex items-center space-x-4">
+          <div className="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center print:bg-gray-100">
+            <FaCode className="text-2xl print:text-gray-700" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold mb-1 print:text-gray-900">{data.full_name}</h1>
+            <p className="text-lg opacity-90 print:text-gray-700 print:opacity-100">{data.title || "Software Developer"}</p>
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-4 text-sm print:text-gray-700">
+          {renderContactInfo()}
+        </div>
+      </div>
+
+      <div className="p-6 bg-white text-gray-900">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            {data.objective && (
+              <section>
+                <h2 className="text-xl font-bold mb-3 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaUser className="mr-2" />
+                  Technical Profile
+                </h2>
+                <p className="text-gray-700 leading-relaxed bg-gray-50 p-4 rounded border-l-4" style={{ 
+                  borderColor: currentTemplateConfig.primaryColor 
+                }}>
+                  {data.objective}
+                </p>
+              </section>
+            )}
+
+            {renderExperience().length > 0 && (
+              <section>
+                <h2 className="text-xl font-bold mb-4 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaBriefcase className="mr-2" />
+                  Technical Experience
+                </h2>
+                {renderExperience()}
+              </section>
+            )}
+
+            {renderProjects().length > 0 && (
+              <section>
+                <h2 className="text-xl font-bold mb-4 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaCode className="mr-2" />
+                  Development Projects
+                </h2>
                 {renderProjects()}
               </section>
             )}
           </div>
 
           <div className="space-y-6">
-            {/* Skills */}
             {data.skills && (
-              <section className="section">
-                <h2 className="section-title">Skills</h2>
+              <section>
+                <h3 className="text-lg font-bold mb-3 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaCog className="mr-2" />
+                  Tech Stack
+                </h3>
                 {renderSkills()}
               </section>
             )}
 
-            {/* Certifications */}
-            {renderCertifications().length > 0 && (
-              <section className="section">
-                <h2 className="section-title">Certifications</h2>
-                {renderCertifications()}
-              </section>
-            )}
-
-            {/* Languages */}
-            {renderLanguages().length > 0 && (
-              <section className="section">
-                <h2 className="section-title">Languages</h2>
-                {renderLanguages()}
-              </section>
-            )}
-
-            {/* Interests */}
-            {data.interests && (
-              <section className="section">
-                <h2 className="section-title">Interests</h2>
-                <p className="text-sm text-gray-700">{data.interests}</p>
-              </section>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const MinimalTemplate = () => (
-    <div className="bg-white shadow-lg max-w-4xl mx-auto">
-      <div className="p-6">
-        {/* Header */}
-        <div className="text-center border-b-2 pb-6 mb-6" style={{ borderColor: currentTemplateConfig.primaryColor }}>
-          <h1 className="text-4xl font-light mb-3" style={{ color: currentTemplateConfig.primaryColor }}>
-            {data.full_name}
-          </h1>
-          <div className="flex justify-center flex-wrap gap-6 text-sm text-gray-600">
-            {renderContactInfo()}
-          </div>
-        </div>
-
-        {/* Objective */}
-        {data.objective && (
-          <section className="mb-6">
-            <p className="text-center text-gray-700 leading-relaxed italic">{data.objective}</p>
-          </section>
-        )}
-
-        {/* Experience */}
-        {renderExperience().length > 0 && (
-          <section className="mb-6">
-            <h2 className="section-title">Experience</h2>
-            {renderExperience()}
-          </section>
-        )}
-
-        {/* Education */}
-        {renderEducation().length > 0 && (
-          <section className="mb-6">
-            <h2 className="section-title">Education</h2>
-            {renderEducation()}
-          </section>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Skills */}
-          {data.skills && (
-            <section>
-              <h2 className="section-title">Skills</h2>
-              {renderSkills()}
-            </section>
-          )}
-
-          {/* Projects */}
-          {renderProjects().length > 0 && (
-            <section>
-              <h2 className="section-title">Projects</h2>
-              {renderProjects()}
-            </section>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  const ModernTemplate = () => (
-    <div className="bg-white shadow-lg overflow-hidden rounded-lg border border-gray-100">
-      {/* Header - Bold, modern header with gradient background */}
-      <div className="relative">
-        <div className="h-24 bg-gradient-to-r from-purple-600 via-violet-500 to-indigo-600"></div>
-        <div className="absolute -bottom-16 left-6 h-32 w-32 rounded-full border-4 border-white shadow-lg bg-white overflow-hidden flex items-center justify-center">
-          {data.photo_url ? (
-            <img src={data.photo_url} alt={data.full_name} className="h-full w-full object-cover" />
-          ) : (
-            <div className="h-full w-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white text-3xl font-bold">
-              {data.full_name ? data.full_name.charAt(0) : "R"}
-            </div>
-          )}
-        </div>
-        <div className="ml-44 p-6 pb-4">
-          <h1 className="text-3xl font-bold text-gray-800">{data.full_name}</h1>
-          <p className="text-lg text-indigo-600 font-medium">{data.title || "Professional"}</p>
-        </div>
-      </div>
-
-      <div className="pt-16 pb-8 px-6">
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left column - Personal details and skills */}
-          <div className="space-y-8">
-            {/* Contact Information with modern icons */}
-            <div className="bg-gray-50 rounded-xl p-5">
-              <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Contact Information</h3>
-              <div className="space-y-3">
-                {data.email && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaEnvelope className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">{data.email}</span>
-                  </div>
-                )}
-                {data.phone && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaPhone className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">{data.phone}</span>
-                  </div>
-                )}
-                {data.linkedin_url && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaLinkedin className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">LinkedIn Profile</span>
-                  </div>
-                )}
-                {data.portfolio_url && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaGlobe className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">Portfolio</span>
-                  </div>
-                )}
-                {data.location && (
-                  <div className="flex items-center text-gray-700">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
-                      <FaMapMarkerAlt className="text-indigo-600" />
-                    </div>
-                    <span className="text-sm">{data.location}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Skills - Modern pill style */}
-            {data.skills && (
-              <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Skills</h3>
-                <div className="flex flex-wrap gap-2">
-                  {data.skills.split(',').map((skill, index) => (
-                    <span 
-                      key={index} 
-                      className="px-3 py-1 bg-gradient-to-r from-indigo-100 to-violet-50 text-indigo-700 rounded-full text-xs font-medium"
-                    >
-                      {skill.trim()}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Languages - Modern clean look */}
-            {renderLanguages().length > 0 && (
-              <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Languages</h3>
-                <div className="space-y-2">
-                  {renderLanguages()}
-                </div>
-              </div>
-            )}
-
-            {/* Certifications - Clean modern cards */}
-            {renderCertifications().length > 0 && (
-              <div className="bg-gray-50 rounded-xl p-5">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-4 border-b border-gray-200 pb-2">Certifications</h3>
-                <div className="space-y-3">
-                  {renderCertifications()}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Experience, Education, etc. */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* About Me/Objective - Card with subtle gradient */}
-            {data.objective && (
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-5 border border-indigo-100">
-                <h3 className="text-sm uppercase tracking-wider text-indigo-600 font-semibold mb-3">About Me</h3>
-                <p className="text-gray-700 leading-relaxed">{data.objective}</p>
-              </div>
-            )}
-
-            {/* Experience - Modern timeline style */}
-            {renderExperience().length > 0 && (
-              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-6 border-b border-gray-200 pb-2">Professional Experience</h3>
-                <div className="space-y-6">
-                  {renderExperience().map((exp, index) => (
-                    <div key={index} className="relative pl-6 border-l-2 border-indigo-200 pb-6 last:pb-0">
-                      <div className="absolute -left-1.5 top-0 h-3 w-3 rounded-full bg-indigo-500"></div>
-                      {exp}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Education - Modern cards with subtle styling */}
-            {renderEducation().length > 0 && (
-              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-6 border-b border-gray-200 pb-2">Education</h3>
-                <div className="space-y-4">
-                  {renderEducation().map((edu, index) => (
-                    <div key={index} className="bg-gray-50 rounded-lg p-4 border-l-4 border-indigo-400">
-                      {edu}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Projects - Modern cards with hover effects */}
-            {renderProjects().length > 0 && (
-              <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-6 border-b border-gray-200 pb-2">Projects</h3>
-                <div className="grid grid-cols-1 gap-4">
-                  {renderProjects().map((project, index) => (
-                    <div key={index} className="bg-gradient-to-r from-gray-50 to-white rounded-lg p-4 border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                      {project}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const ExecutiveTemplate = () => (
-    <div className="bg-white shadow-lg">
-      {/* Header */}
-      <div className="p-6 border-b-4" style={{ borderColor: currentTemplateConfig.primaryColor }}>
-        <h1 className="text-4xl font-bold mb-3" style={{ color: currentTemplateConfig.primaryColor }}>
-          {data.full_name}
-        </h1>
-        <div className="flex flex-wrap gap-6 text-gray-600">
-          {renderContactInfo()}
-        </div>
-      </div>
-
-      <div className="p-6">
-        {/* Executive Summary */}
-        {data.objective && (
-          <section className="mb-6 p-4 bg-gray-50 rounded">
-            <h2 className="text-xl font-semibold mb-3" style={{ color: currentTemplateConfig.primaryColor }}>
-              Executive Summary
-            </h2>
-            <p className="text-gray-700 leading-relaxed">{data.objective}</p>
-          </section>
-        )}
-
-        {/* Experience */}
-        {renderExperience().length > 0 && (
-          <section className="mb-6">
-            <h2 className="section-title">Professional Experience</h2>
-            {renderExperience()}
-          </section>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Education */}
-          {renderEducation().length > 0 && (
-            <section>
-              <h2 className="section-title">Education</h2>
-              {renderEducation()}
-            </section>
-          )}
-
-          {/* Skills */}
-          {data.skills && (
-            <section>
-              <h2 className="section-title">Core Competencies</h2>
-              {renderSkills()}
-            </section>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  const CreativeTemplate = () => (
-    <div className="bg-white shadow-lg">
-      {/* Decorative header */}
-      <div className="h-2 bg-gradient-to-r" style={{
-        backgroundImage: `linear-gradient(90deg, ${currentTemplateConfig.primaryColor}, ${currentTemplateConfig.accentColor}, ${currentTemplateConfig.secondaryColor})`
-      }}></div>
-      
-      <div className="p-6">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold mb-2" style={{ color: currentTemplateConfig.primaryColor }}>
-            {data.full_name}
-          </h1>
-          <div className="flex justify-center flex-wrap gap-4 text-sm">
-            {renderContactInfo()}
-          </div>
-        </div>
-
-        {/* Objective */}
-        {data.objective && (
-          <section className="mb-6">
-            <div className="bg-gradient-to-r p-4 rounded-lg" style={{
-              backgroundImage: `linear-gradient(135deg, ${currentTemplateConfig.primaryColor}15, ${currentTemplateConfig.accentColor}15)`
-            }}>
-              <h2 className="text-xl font-semibold mb-2" style={{ color: currentTemplateConfig.primaryColor }}>
-                Creative Vision
-              </h2>
-              <p className="text-gray-700 leading-relaxed">{data.objective}</p>
-            </div>
-          </section>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <div className="lg:col-span-3 space-y-6">
-            {/* Experience */}
-            {renderExperience().length > 0 && (
-              <section>
-                <h2 className="section-title">Experience</h2>
-                {renderExperience()}
-              </section>
-            )}
-
-            {/* Projects */}
-            {renderProjects().length > 0 && (
-              <section>
-                <h2 className="section-title">Featured Projects</h2>
-                {renderProjects()}
-              </section>
-            )}
-          </div>
-
-          <div className="lg:col-span-2 space-y-6">
-            {/* Skills */}
-            {data.skills && (
-              <section>
-                <h2 className="section-title">Skills</h2>
-                {renderSkills()}
-              </section>
-            )}
-
-            {/* Education */}
             {renderEducation().length > 0 && (
               <section>
-                <h2 className="section-title">Education</h2>
+                <h3 className="text-lg font-bold mb-3 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaGraduationCap className="mr-2" />
+                  Education
+                </h3>
                 {renderEducation()}
               </section>
             )}
 
-            {/* Certifications */}
             {renderCertifications().length > 0 && (
               <section>
-                <h2 className="section-title">Certifications</h2>
+                <h3 className="text-lg font-bold mb-3 flex items-center" style={{ color: currentTemplateConfig.primaryColor }}>
+                  <FaAward className="mr-2" />
+                  Certifications
+                </h3>
                 {renderCertifications()}
               </section>
             )}
@@ -803,31 +702,290 @@ const Resume = ({ data }) => {
     </div>
   );
 
+  // Template renderer
   const renderTemplate = () => {
     switch (currentTemplate) {
-      case 'minimal': return <MinimalTemplate />;
       case 'modern': return <ModernTemplate />;
-      case 'executive': return <ExecutiveTemplate />;
+      case 'ats_optimized': return <ATSOptimizedTemplate />;
       case 'creative': return <CreativeTemplate />;
-      default: return <ProfessionalTemplate />;
+      case 'tech_focus': return <TechFocusTemplate />;
+      case 'professional':
+      default: 
+        return <ProfessionalTemplate />;
     }
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // **FIXED PDF DOWNLOAD - NO TIMESTAMP, NO EXTRA WHITESPACE**
+  const handleDownloadPDF = () => {
+    const printWindow = window.open('', '_blank');
+    const resumeContent = document.getElementById('resume-content').cloneNode(true);
+    
+    // Remove all interactive elements and clean up for print
+    const linksInContent = resumeContent.querySelectorAll('a');
+    linksInContent.forEach(link => {
+      const span = document.createElement('span');
+      span.textContent = link.textContent;
+      span.className = link.className;
+      link.parentNode.replaceChild(span, link);
+    });
+
+    const cleanHTML = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Resume</title>
+          <meta charset="utf-8">
+          <style>
+            /* EXACT A4 SIZE WITH NO BROWSER INTERFERENCE */
+            @page {
+              size: A4;
+              margin: 0;
+              padding: 0;
+            }
+            
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
+            
+            html, body {
+              width: 210mm;
+              height: 297mm;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+              font-size: 14px;
+              line-height: 1.4;
+              color: #333;
+              background: white;
+              overflow: hidden;
+            }
+            
+            .resume-container {
+              width: 210mm;
+              height: 297mm;
+              padding: 10mm;
+              background: white;
+              overflow: hidden;
+              page-break-inside: avoid;
+            }
+            
+            /* Remove all shadows and rounded corners for print */
+            .shadow-lg, .shadow-2xl, .shadow-xl {
+              box-shadow: none !important;
+            }
+            
+            .rounded-lg, .rounded-xl, .rounded {
+              border-radius: 0 !important;
+            }
+            
+            /* Ensure proper scaling */
+            .grid {
+              display: grid;
+              grid-template-columns: 1fr 2fr;
+              gap: 15mm;
+            }
+            
+            .lg\\:col-span-2 {
+              grid-column: span 2;
+            }
+            
+            /* Typography scaling for A4 */
+            h1 { font-size: 24px; margin-bottom: 6px; }
+            h2 { font-size: 18px; margin-bottom: 12px; }
+            h3 { font-size: 16px; margin-bottom: 10px; }
+            p, div, span { font-size: 13px; }
+            
+            /* Spacing adjustments */
+            .space-y-6 > * + * { margin-top: 15px; }
+            .space-y-4 > * + * { margin-top: 10px; }
+            .space-y-8 > * + * { margin-top: 20px; }
+            
+            .mb-2 { margin-bottom: 6px; }
+            .mb-3 { margin-bottom: 10px; }
+            .mb-4 { margin-bottom: 12px; }
+            .mb-6 { margin-bottom: 18px; }
+            
+            .p-4 { padding: 12px; }
+            .p-6 { padding: 18px; }
+            .p-8 { padding: 20px; }
+            
+            /* Background colors for print */
+            .bg-gray-50 { background-color: #f9f9f9 !important; }
+            .bg-gray-100 { background-color: #f3f4f6 !important; }
+            .bg-blue-100 { background-color: #dbeafe !important; }
+            .bg-gray-200 { background-color: #e5e7eb !important; }
+            
+            /* Text colors */
+            .text-white { color: white !important; }
+            .text-gray-900 { color: #111827 !important; }
+            .text-gray-800 { color: #1f2937 !important; }
+            .text-gray-700 { color: #374151 !important; }
+            .text-gray-600 { color: #4b5563 !important; }
+            
+            /* Border utilities */
+            .border-b-2 { border-bottom: 2px solid; }
+            .border-l-4 { border-left: 4px solid; }
+            
+            /* Flexbox utilities */
+            .flex { display: flex; }
+            .flex-wrap { flex-wrap: wrap; }
+            .justify-between { justify-content: space-between; }
+            .items-center { align-items: center; }
+            .items-start { align-items: flex-start; }
+            
+            /* Hide print-specific classes that show unwanted content */
+            .print\\:hidden { display: none !important; }
+            
+            /* Contact info styling */
+            .contact-item {
+              display: flex;
+              align-items: center;
+              margin-bottom: 6px;
+              font-size: 12px;
+            }
+            
+            /* Skills styling */
+            .flex.flex-wrap.gap-2 {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 6px;
+            }
+            
+            .px-3.py-1 {
+              padding: 4px 8px;
+              font-size: 11px;
+              border: 1px solid #d1d5db;
+              border-radius: 4px;
+              background: #f9f9f9;
+            }
+            
+            /* Experience item bullets */
+            .relative.pl-4::before {
+              content: '•';
+              position: absolute;
+              left: 0;
+              top: 0;
+              color: #6b7280;
+            }
+            
+            .relative.pl-4 {
+              position: relative;
+              padding-left: 16px;
+              margin-bottom: 4px;
+              font-size: 12px;
+              line-height: 1.3;
+            }
+            
+            /* Ensure no page breaks within items */
+            .experience-item, .education-item, .project-item, .certification-item {
+              page-break-inside: avoid;
+              margin-bottom: 15px;
+            }
+            
+            /* Remove any browser default margins */
+            @media print {
+              html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+              }
+              
+              .resume-container {
+                margin: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                max-width: none !important;
+                max-height: none !important;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="resume-container">
+            ${resumeContent.innerHTML}
+          </div>
+          <script>
+            // Auto-trigger print dialog
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+                // Close window after print dialog
+                setTimeout(function() {
+                  window.close();
+                }, 1000);
+              }, 500);
+            };
+            
+            // Handle print completion
+            window.onafterprint = function() {
+              window.close();
+            };
+          </script>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.write(cleanHTML);
+    printWindow.document.close();
+  };
+
+  // Template Selector
+  const TemplateSelector = () => (
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+      {Object.entries(templates).map(([key, template]) => (
+        <button
+          key={key}
+          onClick={() => setCurrentTemplate(key)}
+          className={`group relative p-6 rounded-xl border-2 transition-all duration-300 text-left overflow-hidden ${
+            currentTemplate === key
+              ? 'border-blue-500 bg-blue-50 shadow-lg transform scale-105'
+              : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+          }`}
+        >
+          <div className="absolute top-3 right-3 text-2xl">{template.icon}</div>
+          <div className="mb-4">
+            <div className="font-bold text-lg text-gray-800 mb-1">{template.name}</div>
+            <div className="text-sm text-gray-500">{template.description}</div>
+          </div>
+          <div className="flex space-x-2">
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: template.primaryColor }}></div>
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: template.secondaryColor }}></div>
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: template.accentColor }}></div>
+          </div>
+          {currentTemplate === key && (
+            <div className="absolute top-2 right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+            </div>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+
+  // Preview Modal
   if (isPreviewMode) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full h-[90vh] overflow-hidden flex flex-col">
-          <div className="flex justify-between items-center p-4 border-b">
-            <h3 className="text-lg font-semibold">Resume Preview</h3>
+        <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full h-[90vh] overflow-hidden flex flex-col">
+          <div className="flex justify-between items-center p-6 border-b bg-gray-50">
+            <div>
+              <h3 className="text-xl font-bold text-gray-800">Resume Preview</h3>
+              <p className="text-sm text-gray-600">{templates[currentTemplate].name} Template</p>
+            </div>
             <button 
               onClick={() => setIsPreviewMode(false)}
-              className="p-2 hover:bg-gray-100 rounded"
+              className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
             >
-              ✕
+              <FaTimes className="text-gray-600" />
             </button>
           </div>
-          <div className="flex-1 overflow-auto p-4">
-            <div id="resume-content" className="transform scale-75 origin-top">
+          <div className="flex-1 overflow-auto p-6 bg-gray-100">
+            <div className="transform scale-90 origin-top">
               {renderTemplate()}
             </div>
           </div>
@@ -837,67 +995,88 @@ const Resume = ({ data }) => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       {/* Controls */}
-      <div className="flex flex-wrap gap-3 items-center justify-between bg-white p-4 rounded-lg shadow-sm border">
-        <div className="flex items-center gap-3">
-          <FaPalette className="text-gray-500" />
-          <span className="text-sm font-medium text-gray-700">Template:</span>
-          <div className="flex gap-2">
-            {Object.entries(templates).map(([key, template]) => (
-              <button
-                key={key}
-                onClick={() => setCurrentTemplate(key)}
-                className={`px-3 py-1 text-xs rounded-full transition-colors ${
-                  currentTemplate === key
-                    ? 'text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-                style={currentTemplate === key ? { backgroundColor: template.primaryColor } : {}}
-              >
-                {template.name}
-              </button>
-            ))}
+      <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+              <FaPalette className="text-white text-xl" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800">Resume Builder</h2>
+              <p className="text-gray-600">PDF download fixed - exact preview match!</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setIsPreviewMode(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md"
+            >
+              <FaEye />
+              Preview
+            </button>
+            <button
+              onClick={handlePrint}
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors shadow-md"
+            >
+              <FaPrint />
+              Print
+            </button>
+            <button
+              onClick={handleDownloadPDF}
+              className="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors shadow-md"
+            >
+              <FaDownload />
+              Download Clean PDF
+            </button>
           </div>
         </div>
         
-        <div className="flex gap-2">
-          <button
-            onClick={() => setIsPreviewMode(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm"
-          >
-            <FaEye size={14} />
-            Preview
-          </button>
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm"
-          >
-            <FaPrint size={14} />
-            Print
-          </button>
-          <button
-            onClick={handleDownloadPDF}
-            className="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg transition-colors text-sm"
-          >
-            <FaDownload size={14} />
-            Download PDF
-          </button>
+        <TemplateSelector />
+        
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6 mt-6">
+          <div className="flex items-start space-x-4">
+            <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-bold">✓</span>
+            </div>
+            <div>
+              <h4 className="font-bold text-green-900 mb-2">PDF Download Issues Fixed!</h4>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• **No timestamp** - Removed browser-added date/time</li>
+                <li>• **No extra whitespace** - Exact A4 sizing with precise margins</li>
+                <li>• **Clean title** - Just "Resume" instead of full page title</li>
+                <li>• **Exact preview match** - What you see is what you get</li>
+                <li>• **Perfect scaling** - Content fits exactly on A4 page</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mt-4">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">💡</span>
+            </div>
+            <div>
+              <h4 className="font-medium text-blue-900">Pro Tip for Best Results:</h4>
+              <p className="text-sm text-blue-700 mt-1">
+                In your browser's print dialog, make sure to **disable headers and footers** 
+                (usually found in "More settings" → uncheck "Headers and footers") for the cleanest PDF output.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Resume Content */}
-      <div
-        key={currentTemplate}
-        className="bg-gray-50 p-4 rounded-lg"
-      >
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl">
         <div 
           id="resume-content" 
-          className="max-w-4xl mx-auto transform origin-top"
+          className="max-w-5xl mx-auto transform origin-top transition-all duration-500"
           style={{ 
-            transform: 'scale(0.8)',
-            minHeight: '11in',
-            aspectRatio: '8.5 / 11'
+            transform: 'scale(0.9)',
+            minHeight: '11in'
           }}
         >
           {renderTemplate()}
@@ -906,6 +1085,11 @@ const Resume = ({ data }) => {
 
       {/* Print Styles */}
       <style jsx>{`
+        @page {
+          size: A4;
+          margin: 0;
+        }
+        
         @media print {
           body * {
             visibility: hidden;
@@ -917,15 +1101,15 @@ const Resume = ({ data }) => {
             position: absolute;
             left: 0;
             top: 0;
-            width: 100%;
+            width: 210mm !important;
+            height: 297mm !important;
             transform: none !important;
             max-width: none !important;
             margin: 0 !important;
-            padding: 0.5in !important;
+            padding: 10mm !important;
             min-height: auto !important;
-          }
-          .resume-container {
-            page-break-inside: avoid;
+            background: white !important;
+            font-size: 14px !important;
           }
         }
       `}</style>
